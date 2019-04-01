@@ -1,6 +1,7 @@
-# Procal (Work in progress)
+# Procal
 Simple CLI program to aid those learning propositional calculus.
 
+![stability-wip](https://img.shields.io/badge/stability-work_in_progress-lightgrey.svg)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![Generic badge](https://img.shields.io/badge/You%20didn%27t-ask%20for%20this-red.svg)](https://shields.io/)
 
@@ -31,7 +32,7 @@ $ .\procal "P | (P & ¬Q) & P" -tt=0
 ```
 $ .\procal -D "(P <=> Q) <=> (¬P & ¬Q) | (P & Q)"
     (P ↔ Q) ↔ (¬P ∧ ¬Q) ∨ (P ∧ Q)
-    
+
     1. (P ↔ Q)  ↔ (P → Q) ∧ (Q → P)                                 (By Material Equivalence)
     2.           ↔ (¬P ∨ Q) ∧ (¬Q ∨ P)                             (By Material Implication)
     3.           ↔ [(¬P ∨ Q) ∧ ¬Q] ∨ [(¬P ∨ Q) ∧ P]               (By Distributive Property of ∧ w/r to ∨)
