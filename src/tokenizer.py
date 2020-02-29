@@ -1,7 +1,10 @@
 import src.token as tok
 
+# TODO: implementar usando ReadableObject
 class Tokenizer:
     def __init__(self, prop):
+        if not prop:
+            prop = " "
         self.proposition = prop
         
         self.parenthesis = 0
