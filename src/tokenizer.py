@@ -86,5 +86,3 @@ class Tokenizer:
     def show_tokens(self):
         for i in self.tokens:
             print(i)
-                    
-                    

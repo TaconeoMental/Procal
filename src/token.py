@@ -34,5 +34,3 @@ class Token:
 def token_name(t: Token) -> str:
     token_str = ['N/a', 'VARIABLE', 'BICONDITIONAL', 'IMPL', 'DISJ', 'CONJ', 'NEG', 'L_PAR', 'R_PAR', 'EOI']
     return token_str[t.type]
-
-
