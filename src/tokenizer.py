@@ -14,8 +14,7 @@ class Tokenizer:
         self.char = ""
         self.peek = self.proposition[self.index + 1]
         self.tokens = list()
-        
-        self.tokenize()
+
 
     def get_char(self):
         self.index += 1

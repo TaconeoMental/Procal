@@ -10,6 +10,7 @@ def main():
     args = arg_parser.parse_args()
 
     tokenizer = Tokenizer(args.prop)
+    tokenizer.tokenize()
     
     if args.tokens:
         tokenizer.show_tokens()
