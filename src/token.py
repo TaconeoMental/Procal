@@ -14,6 +14,8 @@ import dataclasses
     EOI
 ) = range(10)
 
+# TODO: Reescribir Token como una clase para definir start con el mismo
+# valor de end con el fin de evitar indices como None:int
 @dataclasses.dataclass
 class Token:
     type: int = 0

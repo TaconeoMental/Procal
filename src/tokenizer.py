@@ -1,11 +1,13 @@
 import src.token as tok
+from src.error_collector import Error
 
 # TODO: implementar usando ReadableObject
 class Tokenizer:
-    def __init__(self, prop):
+    def __init__(self, prop, err_coll):
         if not prop:
             prop = " "
         self.proposition = prop
+        self.err_coll = err_coll
         
         self.parenthesis = 0
         
@@ -80,6 +82,9 @@ class Tokenizer:
                     t.value += self.get_char()
                     
             t.end = self.index
+            
+            if t.type == tok.UNKNOWN:
+                self.err_coll.add_error(Error(t, f"operator '{self.proposition[t.end]}' not recognized"))
 
             self.tokens.append(t)
         self.tokens.append(tok.Token(tok.EOI))
