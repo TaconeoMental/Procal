@@ -3,10 +3,8 @@ from src.error_collector import Error
 
 # TODO: implementar usando ReadableObject
 class Tokenizer:
-    def __init__(self, prop, err_coll):
-        if not prop:
-            prop = " "
-        self.proposition = prop
+    def __init__(self, err_coll):
+        self.proposition = err_coll.proposition
         self.err_coll = err_coll
         
         self.parenthesis = 0
@@ -87,10 +85,11 @@ class Tokenizer:
             t.end = end
 
             if t.type == tok.UNKNOWN:
-                self.err_coll.add_error(Error(t, f"operator '{self.proposition[t.start : t.end + 1]}' not recognized"))
+                self.err_coll.add_error(Error(t, f"Operator '{self.proposition[t.start : t.end + 1]}' not recognized"))
 
             self.tokens.append(t)
         self.tokens.append(tok.Token(tok.EOI, start=self.index, end=self.index))
+        return self.tokens
 
     def show_tokens(self):
         for i in self.tokens:

@@ -10,23 +10,25 @@ def main():
     arg_parser.add_argument("--ast", "-a", action="store_true")
     args = arg_parser.parse_args()
     
+    if not args.prop:
+        args.prop = " "
+    
     error_collector = ErrorCollector(args.prop)
 
-    tokenizer = Tokenizer(args.prop, error_collector)
-    tokenizer.tokenize()
+    tokenizer = Tokenizer(error_collector)
 
-    parser = Parser(tokenizer.tokens, error_collector)
+    parser = Parser(tokenizer, error_collector)
     ast = parser.parse()
 
     if error_collector.has_errors():
         error_collector.show_errors()
         return
 
-    if args.ast:
-        print(ast)
-
     if args.tokens:
         tokenizer.show_tokens()
+
+    if args.ast:
+        print(ast)
 
 if __name__ == '__main__':
     main()

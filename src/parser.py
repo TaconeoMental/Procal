@@ -30,8 +30,8 @@ class Parser:
     variable = [a-zA-Z];
     """
 
-    def __init__(self, tokens, err_coll):
-        self.tokens = ReadableObject(tokens)
+    def __init__(self, tokenizer, err_coll):
+        self.tokens = ReadableObject(tokenizer.tokenize())
         self.current_token = self.tokens.read()
         self.err_coll = err_coll
 
@@ -46,6 +46,9 @@ class Parser:
     def consume(self, token_type):
         if self.current_token.type == token_type:
             self.current_token = self.tokens.read()
+            
+            # TODO: Evitar que se añada el mismo error varias veces en proposiciones como
+            # "((((((" y reemplazarlo por un mensaje de error de parentesis no balanceados
         elif self.current_token.type == tok.EOI:
             self.err_coll.add_error(Error(self.current_token, f"Unexpected EOI"))
         else:
