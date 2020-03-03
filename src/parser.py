@@ -1,10 +1,9 @@
 import src.token as tok
 import src.ast as ast
+from src.error_collector import Error
 
 class ReadableObject:
     def __init__(self, string):
-        if string == "":
-            string = " "
         self.string = iter(string)
 
     def read(self):
@@ -23,7 +22,7 @@ class Parser:
     impl_expr = disj_expr, {"->", disj_expr};
     disj_expr = conj_expr, {"|", conj_expr};
     conj_expr = neg_expr, {"&", neg_expr};
-    neg_expr = "¬", neg_expr
+    neg_expr = "~", neg_expr
              | prop_primaria;
     prop_primaria = variable
                   | "(", prop, ")";
@@ -31,9 +30,10 @@ class Parser:
     variable = [a-zA-Z];
     """
 
-    def __init__(self, tokens):
+    def __init__(self, tokens, err_coll):
         self.tokens = ReadableObject(tokens)
         self.current_token = self.tokens.read()
+        self.err_coll = err_coll
 
     def _bin_op(self, token_type, function):
         node = function()
@@ -46,9 +46,10 @@ class Parser:
     def consume(self, token_type):
         if self.current_token.type == token_type:
             self.current_token = self.tokens.read()
+        elif self.current_token.type == tok.EOI:
+            self.err_coll.add_error(Error(self.current_token, f"Unexpected EOI"))
         else:
-            # Reemplazar con un recolector de errores
-            raise Exception(f"{self.current_token.end} | Expected {tok.token_name(token_type)} Got: {tok.token_name(self.current_token.type)}")
+            self.err_coll.add_error(Error(self.current_token, f"Expected {tok.token_name(token_type)} Got: {tok.token_name(self.current_token.type)}"))
 
     def parse(self):
         node = ast.Proposition(self.prop())

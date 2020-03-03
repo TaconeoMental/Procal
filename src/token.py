@@ -34,5 +34,5 @@ class Token:
 # Returns a string representation of a tokens type
 # NOTE: Could be implemented as a data class method of Token
 def token_name(t: int) -> str:
-    token_str = ['N/a', 'VARIABLE', 'BICONDITIONAL', 'IMPL', 'DISJ', 'CONJ', 'NEG', 'L_PAR', 'R_PAR', 'EOI']
+    token_str = ['UNKNOWN', 'VARIABLE', 'BICONDITIONAL', 'IMPL', 'DISJ', 'CONJ', 'NEG', 'L_PAR', 'R_PAR', 'EOI']
     return token_str[t]

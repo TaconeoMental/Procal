@@ -14,23 +14,19 @@ def main():
 
     tokenizer = Tokenizer(args.prop, error_collector)
     tokenizer.tokenize()
-    
-    if args.tokens:
-        tokenizer.show_tokens()
+
+    parser = Parser(tokenizer.tokens, error_collector)
+    ast = parser.parse()
+
     if error_collector.has_errors():
         error_collector.show_errors()
-
-    # Falla al generar una excepción en el método parse, pues
-    # la variable ast nunca se asigna y no puede imprimirse después.
-    # TODO: Escribir recolector de Errores
-    try:
-        parser = Parser(tokenizer.tokens)
-        ast = parser.parse()
-    except Exception as e:
-        print(str(e))
+        return
 
     if args.ast:
         print(ast)
+
+    if args.tokens:
+        tokenizer.show_tokens()
 
 if __name__ == '__main__':
     main()

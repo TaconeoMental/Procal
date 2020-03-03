@@ -7,12 +7,8 @@ from src.token import Token
 class Error:
     def __init__(self, token, descrip):
         self.error_description = descrip
-        
-        # Todo este lío debería haber sido resuelto en Token
-        if token.start is None:
-            self.start = token.end
-        else:
-            self.start = token.start
+
+        self.start = token.start
         
         self.end = token.end
         

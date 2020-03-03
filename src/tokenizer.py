@@ -32,15 +32,16 @@ class Tokenizer:
         
     def tokenize(self):
         while self.get_char():
+            end = self.index
             # Escribiría una clase para simular un switch, pero PEP8 Y bla bla
             if self.char.isspace():
                 continue
-            t = tok.Token()
+            t = tok.Token(start=self.index)
             if self.char.isalpha():
-                t.start = self.index
                 var = self.char
                 while self.peek.isalpha():
                     var += self.get_char()
+                    end += 1
                 t.type = tok.VARIABLE
                 t.value = var
             
@@ -63,16 +64,17 @@ class Tokenizer:
             elif self.char == '-':
                 if self.peek == '>':
                     t.type = tok.OP_IMPL
+                    end = self.index + 1
                     self.get_char()
 
             elif self.char == '<' and self.get_char() == '=':
                 if self.peek == '>':
                     t.type = tok.OP_BICOND
                 self.get_char()
-                    
+                end += 2
+
             else:
                 t.value += self.char
-                t.start = self.index
                 while (
                         self.peek and
                         not self.peek.isspace() and 
@@ -80,16 +82,16 @@ class Tokenizer:
                         not self.peek.isalpha()
                       ):
                     t.value += self.get_char()
-                    
-            t.end = self.index
-            
+                end = self.index
+
+            t.end = end
+
             if t.type == tok.UNKNOWN:
-                self.err_coll.add_error(Error(t, f"operator '{self.proposition[t.end]}' not recognized"))
+                self.err_coll.add_error(Error(t, f"operator '{self.proposition[t.start : t.end + 1]}' not recognized"))
 
             self.tokens.append(t)
-        self.tokens.append(tok.Token(tok.EOI))
-    
-    
+        self.tokens.append(tok.Token(tok.EOI, start=self.index, end=self.index))
+
     def show_tokens(self):
         for i in self.tokens:
             print(i)
