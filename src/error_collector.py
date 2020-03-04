@@ -1,6 +1,3 @@
-from dataclasses import dataclass, field
-from typing import List
-
 from src.token import Token
 
 
@@ -16,11 +13,11 @@ class Error:
     def __str__(self):
         return self.error_description
 
-@dataclass
 class ErrorCollector:
-    proposition: str
+    def __init__(self, prop):
+        self.proposition = prop
     
-    errors: List[Error] = field(default_factory=list)
+        self.errors = list()
 
     # TODO
     def add_error(self, err: Error):

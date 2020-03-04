@@ -1,5 +1,3 @@
-import dataclasses
-
 # Token types enumeration
 (
     UNKNOWN,
@@ -16,15 +14,15 @@ import dataclasses
 
 # TODO: Reescribir Token como una clase para definir start con el mismo
 # valor de end con el fin de evitar indices como None:int
-@dataclasses.dataclass
 class Token:
-    type: int = 0
+    def __init__(self, type = 0, start = None, end = None):
+        self.type = type 
 
-    # ¿Será necesario guardar el valor teniendo los índices y considerando que es una cadena pequeña?
-    value: str = ""
+        # ¿Será necesario guardar el valor teniendo los índices y considerando que es una cadena pequeña?
+        self.value: str = ""
 
-    start: int = None
-    end: int = None
+        self.start = start 
+        self.end = end
 
     def __str__(self):
         if not self.value:

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 from src.tokenizer import Tokenizer
 from src.parser import Parser

@@ -25,7 +25,7 @@ class Tokenizer:
             self.peek = self.proposition[self.index + 1]
         except IndexError:
             self.peek = ""   
-        
+
         return self.char
         
     def tokenize(self):
