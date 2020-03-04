@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Set
+from typing import List
 
 from src.token import Token
 
@@ -20,11 +20,11 @@ class Error:
 class ErrorCollector:
     proposition: str
     
-    errors: Set[Error] = field(default_factory=set)
+    errors: List[Error] = field(default_factory=list)
 
     # TODO
     def add_error(self, err: Error):
-        self.errors.add(err)
+        self.errors.append(err)
 
     def has_errors(self) -> bool:
         if not self.errors:
