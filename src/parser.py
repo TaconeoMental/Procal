@@ -86,8 +86,8 @@ class Parser:
     def prop_primaria(self):
         token = self.current_token
         if token.type == tok.VARIABLE:
-            node = ast.Variable(token)
             self.consume(tok.VARIABLE)
+            node = ast.Variable(token)
         elif token.type == tok.L_PAR:
             self.consume(tok.L_PAR)
             node = self.prop()
@@ -95,5 +95,6 @@ class Parser:
         else:
             if token.type == tok.UNKNOWN:
                 self.consume(tok.UNKNOWN)
+                node = self.prop_primaria()
             node = ast.NoOp()
         return node
