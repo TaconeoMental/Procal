@@ -13,10 +13,11 @@ class Error:
     def __str__(self):
         return self.error_description
 
+
 class ErrorCollector:
     def __init__(self, prop):
         self.proposition = prop
-    
+
         self.errors = list()
 
     # TODO

@@ -2,6 +2,7 @@ import src.token as tok
 import src.ast as ast
 from src.error_collector import Error
 
+
 class ReadableObject:
     def __init__(self, string):
         self.string = iter(string)
@@ -11,6 +12,7 @@ class ReadableObject:
             return next(self.string)
         except StopIteration:
             return ''
+
 
 class Parser:
     # TODO: Arreglar esta CFG para que sea asociativa por la derecha, no la izquierda. Esto es relevante más que nada
@@ -46,13 +48,15 @@ class Parser:
     def consume(self, token_type):
         if self.current_token.type == token_type:
             self.current_token = self.tokens.read()
-            
-            # TODO: Evitar que se añada el mismo error varias veces en proposiciones como
-            # "((((((" y reemplazarlo por un mensaje de error de parentesis no balanceados
+
+        # TODO: Evitar que se añada el mismo error varias veces en proposiciones como
+        # "((((((" y reemplazarlo por un mensaje de error de parentesis no balanceados
         elif self.current_token.type == tok.EOI:
-            self.err_coll.add_error(Error(self.current_token, f"Unexpected EOI"))
+            self.err_coll.add_error(
+                Error(self.current_token, f"Unexpected EOI"))
         else:
-            self.err_coll.add_error(Error(self.current_token, f"Expected {tok.token_name(token_type)} Got: {tok.token_name(self.current_token.type)}"))
+            self.err_coll.add_error(Error(
+                self.current_token, f"Expected {tok.token_name(token_type)} Got: {tok.token_name(self.current_token.type)}"))
 
     def parse(self):
         node = ast.Proposition(self.prop())
