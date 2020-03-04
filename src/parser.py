@@ -19,18 +19,17 @@ class Parser:
     # para la implicación material, que por definición asocia por la derecha. a -> b -> c = a -> (b -> c). También, ya
     # que este es un LR, no puede manejar left recursion.
     """
-    prop = bicond_expr;
-    bicond_expr = impl_expr, {"<->", impl_expr};
-    impl_expr = disj_expr, {"->", disj_expr};
-    disj_expr = conj_expr, {"|", conj_expr};
-    conj_expr = neg_expr, {"&", neg_expr};
-    neg_expr = "~", neg_expr
-             | prop_primaria;
-    prop_primaria = variable
-                  | "(", prop, ")";
-                  | epsilon
-    variable = [a-zA-Z];
+    PROP          -> BICOND_EXPR
+    BICOND_EXPR   -> IMPL_EXPR ["<->" IMPL_EXPR]
+    IMPL_EXPR     -> DISJ_EXPR ["->" DISJ_EXPR]
+    DISJ_EXPR     -> CONJ_EXPR ["|" CONJ_EXPR]
+    CONJ_EXPR     -> NEG_EXPR ["&" NEG_EXPR]
+    NEG_EXPR      -> "~" NEG_EXPR
+                   | PROP_PRIMARIA
+    PROP_PRIMARIA -> VARIABLE
+                   | "(" [PROP] ")"
     """
+
 
     def __init__(self, tokenizer, err_coll):
         self.tokens = ReadableObject(tokenizer.tokenize())
@@ -40,7 +39,6 @@ class Parser:
     def _bin_op(self, token_type, function):
         node = function()
         while self.current_token.type == token_type:
-            token = self.current_token
             self.consume(token_type)
             node = ast.BinOp(node, function(), token_type)
         return node
@@ -69,7 +67,12 @@ class Parser:
         return self._bin_op(tok.OP_BICOND, self.impl_expr)
 
     def impl_expr(self):
-        return self._bin_op(tok.OP_IMPL, self.disj_expr)
+        node = self.disj_expr()
+        while self.current_token.type == tok.OP_IMPL:
+            self.consume(tok.OP_IMPL)
+            # Solución floja, pero funciona. Debería modificar la CFG.
+            node = ast.BinOp(self.disj_expr(), node, tok.OP_IMPL)
+        return node
 
     def disj_expr(self):
         return self._bin_op(tok.OP_DISJ, self.conj_expr)
