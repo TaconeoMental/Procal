@@ -96,6 +96,7 @@ class Parser:
             node = self.prop()
             self.consume(tok.R_PAR)
         else:
+            self.err_coll.add_error(Error(self.current_token, "Unexpected end of expression"))
             if token.type == tok.UNKNOWN:
                 self.consume(tok.UNKNOWN)
                 node = self.prop_primaria()
