@@ -25,8 +25,8 @@ class Token:
 
     def __str__(self):
         if not self.value:
-            return f"Token: {token_name(self.type)} {self.start}:{self.end}"
-        return f"Token: {token_name(self.type)}, '{self.value}' {self.start}:{self.end}"
+            return f"Token: {token_name(self.type):<13} {self.start: >5}:{self.end}"
+        return f"Token: {token_name(self.type):<13} {self.start:>5}:{self.end} {self.value:>5}"
 
 
 # NOTE: Could be implemented as a data class method of Token

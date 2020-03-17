@@ -1,13 +1,15 @@
 import src.token as tok
 from src.error_collector import Error
+from src.symbol_table import Symbol
 
 # TODO: implementar usando ReadableObject
 
 
 class Tokenizer:
-    def __init__(self, err_coll):
+    def __init__(self, err_coll, sym_t):
         self.proposition = err_coll.proposition
         self.err_coll = err_coll
+        self.sym_t = sym_t
 
         self.parenthesis = 0
 
@@ -43,6 +45,8 @@ class Tokenizer:
                     end += 1
                 t.type = tok.VARIABLE
                 t.value = var
+                t.end = end
+                self.sym_t.add_symbol(Symbol(t))
 
             elif self.char == '(':
                 t.type = tok.L_PAR
