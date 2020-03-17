@@ -15,13 +15,10 @@ class ReadableObject:
 
 
 class Parser:
-    # TODO: Arreglar esta CFG para que sea asociativa por la derecha, no la izquierda. Esto es relevante más que nada
-    # para la implicación material, que por definición asocia por la derecha. a -> b -> c = a -> (b -> c). También, ya
-    # que este es un LR, no puede manejar left recursion.
     """
     PROP          -> BICOND_EXPR
     BICOND_EXPR   -> IMPL_EXPR ["<->" IMPL_EXPR]
-    IMPL_EXPR     -> DISJ_EXPR ["->" DISJ_EXPR]
+    IMPL_EXPR     -> DISJ_EXPR ["->" IMPL_EXPR]
     DISJ_EXPR     -> CONJ_EXPR ["|" CONJ_EXPR]
     CONJ_EXPR     -> NEG_EXPR ["&" NEG_EXPR]
     NEG_EXPR      -> "~" NEG_EXPR
@@ -70,8 +67,7 @@ class Parser:
         node = self.disj_expr()
         while self.current_token.type == tok.OP_IMPL:
             self.consume(tok.OP_IMPL)
-            # Solución floja, pero funciona. Debería modificar la CFG.
-            node = ast.BinOp(self.disj_expr(), node, tok.OP_IMPL)
+            node = ast.BinOp(node, self.impl_expr(), tok.OP_IMPL)
         return node
 
     def disj_expr(self):
