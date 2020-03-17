@@ -41,8 +41,7 @@ class UnaryOp(Ast):
         return f"¬{self.expr.infix_str()}"
         
     def to_infix(self, current_l, level):
-
-        return f"~{self.expr.to_infix(current_l, level)}"
+        return [f"¬{self.expr.to_infix(current_l, level)}"]
 
     def __repr__(self):
         return f"NEG({self.expr})"
