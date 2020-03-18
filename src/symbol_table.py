@@ -14,13 +14,14 @@ class Symbol:
 # se me ocurre otro nombre
 class SymbolTable:
     def __init__(self):
-        self.symbols = list()
+        self.symbols = dict()
+        self.number_sym = 0
         
     def add_symbol(self, sym):
-        for s in self.symbols:
-            if sym.symbol == s.symbol:
-                return
-        self.symbols.append(sym)
+        if sym.symbol in self.symbols:
+            return
+        self.symbols[sym.symbol] = sym.value
+        self.number_sym += 1
     
     def show_symbols(self):
         for s in self.symbols:

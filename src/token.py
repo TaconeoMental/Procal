@@ -34,3 +34,17 @@ def token_name(t: int) -> str:
     token_str = ['UNKNOWN', 'VARIABLE', 'BICONDITIONAL',
                  'IMPL', 'DISJ', 'CONJ', 'NEG', 'L_PAR', 'R_PAR', 'EOI']
     return token_str[t]
+    
+def token_op(t: int) -> str:
+    token_str = ['↔', '→', '∨', '∧']
+    return token_str[t - 2]
+    
+def eval_bin(op, left, right):
+    funcs = {
+            OP_BICOND: lambda x, y: 1 if x == y else 0, # XNOR
+            OP_IMPL: lambda x, y: 0 if x and not y else 1,
+            OP_DISJ: lambda x, y: x or y,
+            OP_CONJ: lambda x, y: x and y
+            }
+    return funcs[op](left, right)
+
