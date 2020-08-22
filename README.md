@@ -28,7 +28,7 @@ $ .\procal "P | (P & ¬Q) & P" -tt=0
     | T | T |          T          |
     +---+---+---------------------+
 ```
-### Proof generator
+### Proof generator (Not yet implemented)
 ```
 $ .\procal -D "(P <=> Q) <=> (¬P & ¬Q) | (P & Q)"
     (P ↔ Q) ↔ (¬P ∧ ¬Q) ∨ (P ∧ Q)
