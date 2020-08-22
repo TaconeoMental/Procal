@@ -12,14 +12,14 @@ class Ast(object):
 
 class BinOp(Ast):
     def __init__(self, left, right, op):
-        
+
         self.left = left
         self.right = right
         self.op = op
-        
+
     def infix_str(self) -> str:
         return f"{self.left.infix_str()} {tok.token_op(self.op)} {self.right.infix_str()}"
-        
+
     def to_infix(self, current_l, level):
         current_l += 1
         if current_l == level:
@@ -36,7 +36,7 @@ class BinOp(Ast):
             else:
                 infix_l += [self.right.to_infix(current_l, level)]
         return infix_l
-       
+
     def eval(self, env):
         return tok.eval_bin(self.op, self.left.eval(env), self.right.eval(env))
 
@@ -88,30 +88,45 @@ class NoOp(Ast):
 
 class Variable(Ast):
     def __init__(self, token):
-        
+
         self.token = token
         self.value = token.value
-    
+
     def infix_str(self):
         return self.value
-        
+
     def to_infix(self, current_l, level):
         return self.infix_str()
-        
+
     def eval(self, env):
         return env[self.value]
 
     def __repr__(self):
         return f"VAR({self.value})"
 
+class Constant(Ast):
+    def __init__(self, token):
+        self.token = token
+        self.value = token.value
+
+    def infix_str(self):
+        return self.value
+
+    def eval(self, env):
+        if self.token.value.lower() in ("true", "v", "verdadero", "t"):
+            return 1
+        return 0
+    def __repr_(self):
+        return f"CONST({self.value})"
+
 
 class Proposition(Ast):
     def __init__(self, expr):
         self.expr = expr
-        
+
     def infix_str(self):
         return self.expr.infix_str()
-        
+
     def infix_list_until(self, level):
         infix_l = self.expr.to_infix(0, level)
         return infix_l[::-1]

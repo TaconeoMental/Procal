@@ -46,7 +46,16 @@ class Tokenizer:
                 t.type = tok.VARIABLE
                 t.value = var
                 t.end = end
-                self.sym_t.add_symbol(Symbol(t))
+                if t.value.lower() in ("t", "f", "v", "true", "false"):
+                    t.type = tok.CONSTANT
+                elif t.value.lower() in ("y", "and"):
+                    t.type = tok.OP_CONJ
+                elif t.value.lower() in ("o", "or"):
+                    t.type = tok.OP_DISJ
+                elif t.value.lower() == "not":
+                    t.type = tok.OP_NEG
+                else:
+                    self.sym_t.add_symbol(Symbol(t))
 
             elif self.char == '(':
                 t.type = tok.L_PAR
@@ -61,7 +70,7 @@ class Tokenizer:
             elif self.char == '|':
                 t.type = tok.OP_DISJ
 
-            elif self.char == '~':
+            elif self.char in ('~', '-'):
                 t.type = tok.OP_NEG
 
             elif self.char == '-':

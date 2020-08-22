@@ -91,6 +91,9 @@ class Parser:
         if token.type == tok.VARIABLE:
             self.consume(tok.VARIABLE)
             node = ast.Variable(token)
+        elif token.type == tok.CONSTANT:
+            self.consume(tok.CONSTANT)
+            node = ast.Constant(token)
         elif token.type == tok.L_PAR:
             self.consume(tok.L_PAR)
             node = self.prop()

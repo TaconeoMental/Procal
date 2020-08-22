@@ -9,8 +9,9 @@
     OP_NEG,
     L_PAR,
     R_PAR,
-    EOI
-) = range(10)
+    EOI,
+    CONSTANT
+) = range(11)
 
 
 class Token:
@@ -32,13 +33,14 @@ class Token:
 # NOTE: Could be implemented as a data class method of Token
 def token_name(t: int) -> str:
     token_str = ['UNKNOWN', 'VARIABLE', 'BICONDITIONAL',
-                 'IMPL', 'DISJ', 'CONJ', 'NEG', 'L_PAR', 'R_PAR', 'EOI']
+                 'IMPL', 'DISJ', 'CONJ', 'NEG', 'L_PAR', 'R_PAR', 'EOI',
+                 'CONSTANT']
     return token_str[t]
-    
+
 def token_op(t: int) -> str:
     token_str = ['↔', '→', '∨', '∧']
     return token_str[t - 2]
-    
+
 def eval_bin(op, left, right):
     funcs = {
             OP_BICOND: lambda x, y: 1 if x == y else 0, # XNOR
